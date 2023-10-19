@@ -1,0 +1,48 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: laravel_password
+    ports:
+      - "3309:3309"
+    networks:
+      - laravel
+
+nginx:
+    image: nginx:latest
+    container_name: nginx-container
+    volumes:
+      - ./path/to/nginx/config:/etc/nginx/conf.d
+    ports:
+      - "8080:80"
+    networks:
+      - laravel
+      
+php:
+    image: php:7.4-fpm
+    container_name: php-container
+    volumes:
+      - ./path/to/php/code:/var/www/html
+
+phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-container
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3309
+    ports:
+      - "8081:80"
+    networks:
+      - laravel
+
+networks:
+  laravel:
+
+  

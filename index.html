@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function updateDashboard() {
+            $.ajax({
+                url: 'dashboard.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // Limpar a tabela
+                    $('#container-status').empty();
+
+                    // Atualizar a tabela com os novos dados
+                    for (var i = 0; i < data.length; i++) {
+                        $('#container-status').append(
+                            '<tr>' +
+                            '<td>' + data[i].id + '</td>' +
+                            '<td>' + data[i].status + '</td>' +
+                            '<td>' + data[i].name + '</td>' +
+                            '</tr>'
+                        );
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            // Atualizar o dashboard a cada 5 segundos
+            setInterval(updateDashboard, 5000);
+        });
+    </script>
+</head>
+<body>
+    <table id="container-status">
+        <tr>
+            <th>ID do Container</th>
+            <th>Status do Container</th>
+            <th>Nome do Container</th>
+        </tr>
+    </table>
+</body>
+</html>
